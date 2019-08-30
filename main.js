@@ -18,7 +18,18 @@ function saveIssue(e) {
     if (localStorage.getItem('issues') == null) {
         let issues = [];
         issues.push(issue);
+        localStorage.setItem('issues', JSON.stringify(issues));
+    } else {
+        let issues = JSON.parse(localStorage.getItem('issues'));
+        issues.push(issue);
+        localStorage.setItem('issues', JSON.stringify(issues));
     }
+
+    document.getElementById('issueInputForm').reset();
+
+    fetchIssues();
+
+    e.preventDefault();
 }
 
 function fetchIssues() {
@@ -34,14 +45,15 @@ function fetchIssues() {
         let assignedTo = issues[i].assignedTo;
         let status = issues[i].status;
 
-        issuesList.innerHTML += '<div class="well">' +
-            '<h6>Issue ID: ' + id + '</h6>' +
-            '<p><span class="label label-info">' + status + '</span></p>' +
-            '<h3>' + desc + '</h3>' +
-            '<p><span class="glyphicon glyphicon-time"></span>' + severity + '</p>' +
-            '<p><span class="glyphicon glyphicon-user"></span>' + assignedTo + '</p>' +
-            '<a href="#" onclick="setStatusClosed(\''+id+'\')" class="btn btn-warning">Close</a>' +
-            '<a href="#" onclick="deleteIssue(\''+id+'\')" class="btn btn-danger">Delete</a>' +
-            '</div>'
+        issuesList.innerHTML += 
+                                '<div class="well">' +
+                                '<h6>Issue ID: ' + id + '</h6>' +
+                                '<p><span class="label label-info">' + status + '</span></p>' +
+                                '<h3>' + desc + '</h3>' +
+                                '<p><span class="glyphicon glyphicon-time"></span>' + severity + '</p>' +
+                                '<p><span class="glyphicon glyphicon-user"></span>' + assignedTo + '</p>' +
+                                '<a href="#" onclick="setStatusClosed(\''+id+'\')" class="btn btn-warning">Close</a>' +
+                                '<a href="#" onclick="deleteIssue(\''+id+'\')" class="btn btn-danger">Delete</a>' +
+                                '</div>'
     }
 }
